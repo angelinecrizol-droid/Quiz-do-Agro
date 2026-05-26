@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz do Agro!!</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚜</text></svg>">
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2b3b2b;
+            text-align: center;
+            padding: 50px 20px;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: #edf4ea;
+            background-image: linear-gradient(to top, rgba(237, 244, 234, 0.95), rgba(235, 245, 236, 0.85)), url("https://images.unsplash.com/photo-1444044205806-38f3ed106c10?auto=format&fit=crop&w=1200&q=80");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        .caixa-quiz {
+            background-color: rgba(249, 247, 239, 0.96);
+            backdrop-filter: blur(8px);
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(21, 29, 20, 0.18);
+            border-top: 5px solid #5e7a47;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        .banner-fazenda {
+            width: calc(100% + 60px);
+            margin: -30px -30px 25px;
+            height: 180px;
+            border-radius: 20px 20px 0 0;
+            background-image: linear-gradient(to bottom, rgba(255,255,255,0.18), rgba(255,255,255,0.05)), url("https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80");
+            background-size: cover;
+            background-position: center;
+            box-shadow: inset 0 0 0 1000px rgba(255,255,255,0.14);
+        }
+
+        h1 {
+            color: #328837;
+            margin-bottom: 10px;
+        }
+
+        p.subtitulo {
+            color: #5a5a5a;
+            margin-top: 0;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .botao-resposta {
+            background-color: #5a7c53;
+            color: white;
+            border: none;
+            padding: 15px;
+            margin: 10px 0;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .botao-resposta:hover {
+            background-color: #3f5c3a;
+            transform: translateY(-1px);
+        }
+
+        .botao-resposta:focus {
+            outline: 3px solid #a5d69a;
+            outline-offset: 2px;
+        }
+
+        .resultado-destaque {
+            font-size: 24px;
+            font-weight: bold;
+            color: #9d7839;
+            margin-top: 20px;
+        }
+
+        .caixa-recomendacoes {
+            background-color: #f3f4ec;
+            border-left: 5px solid #5e7a47;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .caixa-recomendacoes h3 {
+            margin-top: 0;
+            color: #4f6a44;
+        }
+
+        .caixa-recomendacoes ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        .caixa-recomendacoes li {
+            margin-bottom: 10px;
+        }
+
+        .menu-acessibilidade {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            text-align: right;
+        }
+
+        .btn-pontinhos {
+            background-color: #328837;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .opcoes-menu {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-top: 10px;
+            padding: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .opcoes-menu button {
+            background-color: #f1f8e9;
+            border: 1px solid #c5e1a5;
+            color: #333;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .opcoes-menu button:hover {
+            background-color: #d6eec6;
+        }
+
+        .escondido {
+            display: none;
+        }
+
+        /* regras do modo escuro */
+        body.modo-escuro {
+            background-color: #121814;
+            color: #e4e4d8;
+            background-image: linear-gradient(to top, rgba(5, 10, 8, 0.96), rgba(24, 35, 24, 0.85), rgba(24, 35, 40, 0.88)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%233f5c70'/%3E%3Cellipse cx='400' cy='520' rx='520' ry='220' fill='%223b523d'/%3E%3Cellipse cx='260' cy='520' rx='380' ry='130' fill='%22344d36'/%3E%3Cpath d='M0 420 C200 360 400 500 800 440 L800 600 L0 600 Z' fill='%222d3f2b'/%3E%3Crect x='520' y='340' width='140' height='100' fill='%23403f33' rx='12'/%3E%3Cpolygon points='520,340 590,280 660,340' fill='%232f3228'/%3E%3Crect x='574' y='390' width='30' height='50' fill='%237f7a5f'/%3E%3Crect x='610' y='390' width='30' height='50' fill='%237f7a5f'/%3E%3Crect x='580' y='385' width='60' height='10' fill='%230f1210'/%3E%3Crect x='160' y='400' width='180' height='80' rx='20' fill='%22394a35'/%3E%3Ccircle cx='220' cy='470' r='25' fill='%231b211a'/%3E%3Ccircle cx='300' cy='470' r='25' fill='%231b211a'/%3E%3Crect x='210' y='380' width='80' height='40' fill='%236f6a4f' rx='10'/%3E%3Ccircle cx='75' cy='120' r='50' fill='%23b5ac87'/%3E%3Cpath d='M620 120 C660 90 720 90 760 120 C730 80 670 80 620 120 Z' fill='%23b7b9bd' opacity='0.6'/%3E%3Cpath d='M170 140 C210 110 260 110 300 140 C260 110 220 110 170 140 Z' fill='%23b7b9bd' opacity='0.6'/%3E%3C/svg>");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-blend-mode: multiply;
+        }
+
+        body.modo-escuro .caixa-quiz {
+            background-color: rgba(22, 30, 22, 0.96);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+            border-top: 5px solid #5a8b66;
+        }
+
+        body.modo-escuro h1 {
+            color: #98b88d;
+        }
+
+        body.modo-escuro .caixa-recomendacoes {
+            background-color: rgba(28, 42, 30, 0.9);
+            border-left-color: #5a8b66;
+        }
+
+        body.modo-escuro .caixa-recomendacoes h3 {
+            color: #8ea978;
+        }
+
+        body.modo-escuro .opcoes-menu {
+            background-color: #242323;
+            border-color: #444;
+        }
+
+        body.modo-escuro .opcoes-menu button {
+            background-color: #3a3a3a;
+            border-color: #555;
+            color: #eee;
+        }
+
+        body.modo-escuro .opcoes-menu button:hover {
+            background-color: #4a4a4a;
+        }
+
+        /* regras de fonte maior */
+        .fonte-grande {
+            font-size: 1.2rem;
+        }
+
+        .fonte-grande h1 {
+            font-size: 2.5rem;
+        }
+
+        .fonte-grande h2 {
+            font-size: 1.8rem;
+        }
+
+        .fonte-grande .botao-resposta {
+            font-size: 1.1rem;
+        }
+
+        /* celulares */
+        @media (max-width: 600px) {
+            .caixa-quiz {
+                padding: 20px 15px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            .botao-resposta {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+
+        /* tablets e desktops telas maiores que 768px */
+        @media (min-width: 768px) {
+            .caixa-quiz {
+                max-width: 800px;
+                padding: 40px;
+            }
+        }
+
+        .grade-botoes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+    </style>
+</head>
+<body>
+   <div class="menu-acessibilidade">
+    <button class="btn-pontinhos" onclick="abrirMenu()" title="Acessibilidade">⋮</button>
+    <div id="caixa-opcoes" class="opcoes-menu escondido">
+        <button onclick="aumentarLetra()"title="Aumentar fonte">A+</button>
+        <button onclick="diminuirLetra()"title="Diminuir fonte">A-</button>
+        <button onclick="alternarModoEscuro()" title="Alternar modo escuro">🌙</button>
+        <button onclick="alternarModoClaro()" title="Alternar modo claro">☀️</button>
+        <button onclick="lerTexto()" title="Ler texto">🔊</button>
+    </div>
+   </div>
+   <div class="caixa-quiz">
+        <div class="banner-fazenda" aria-hidden="true"></div>
+    <div id="tela-inicio">
+        <h1>🚜 Quiz do Agro!! 2026 </h1>
+        <p>Descubra que tipo de agricultor você é!</p>
+        <button class="botao-resposta" onclick="comecarQuiz()">Começar o Teste!</button>
+    </div>
+    <div id="pergunta-1" class="escondido">
+        <h2>1. Como você lida com uma infestação de pragas na sua plantação? </h2>
+        <div class="grade-botoes">      
+            <button class="botao-resposta" onclick="resposta('tech')">A) Uso pesticidas químicos para eliminar as pragas rapidamente.</button>
+            <button class="botao-resposta" onclick="resposta('raiz')">B) Introduzo predadores naturais, como joaninhas, para controlar as pragas.</button>
+            <button class="botao-resposta" onclick="resposta('sust')">C) Adoto práticas de manejo integrado de pragas, combinando métodos orgânicos e químicos.</button>
+            <button class="botao-resposta" onclick="resposta('gestor')">D) Analiso os relatórios de pragas e consulto especialistas para tomar a melhor decisão.</button>
+        </div>
+    </div>
+
+   <div id="pergunta-2" class="escondido">
+        <h2>2.Qual é a sua abordagem para melhorar a produtividade da sua fazenda? </h2>
+        <div class="grade-botoes">
+            <button class="botao-resposta" onclick="resposta('tech')">A) Invisto em tecnologia de ponta, como sensores de solo e irrigação automatizada.</button>
+            <button class="botao-resposta" onclick="resposta('raiz')">B) Foco em práticas tradicionais, como rotação de culturas e adubação orgânica.</button>
+            <button class="botao-resposta" onclick="resposta('sust')">C) Adoto métodos sustentáveis, como agricultura regenerativa e agroflorestal.</button>
+            <button class="botao-resposta" onclick="resposta('gestor')">D) Contrato consultores agrícolas para otimizar o manejo e a logística da fazenda.</button>
+        </div>
+    </div>
+
+   <div id="pergunta-3" class="escondido">
+        <h2>3. Como você se mantém atualizado sobre as tendências e inovações no setor agrícola? </h2>
+        <div class="grade-botoes">
+            <button class="botao-resposta" onclick="resposta('tech')">A) Participo de feiras agrícolas e sigo influenciadores do setor nas redes sociais.</button>
+            <button class="botao-resposta" onclick="resposta('raiz')">B) Aprendo com a experiência de agricultores mais antigos e participo de grupos comunitários.</button>
+            <button class="botao-resposta" onclick="resposta('sust')">C) Leio artigos científicos e participo de workshops sobre agricultura sustentável.</button>
+            <button class="botao-resposta" onclick="resposta('gestor')">D) Assino revistas especializadas e participo de conferências do setor agrícola.</button>
+        </div>
+   </div> 
+<div id="pergunta-4" class="escondido">
+        <h2>4. Oque você faz para lidar com as mudanças climáticas e seus impactos na agricultura? </h2>
+        <div class="grade-botoes">
+            <button class="botao-resposta" onclick="resposta('tech')">A) Invisto em tecnologias de previsão climática e adaptação agrícola.</button>
+            <button class="botao-resposta" onclick="resposta('raiz')">B) Adoto práticas agrícolas resilientes, como plantio direto e conservação do solo.</button>
+            <button class="botao-resposta" onclick="resposta('sust')">C) Promovo a sustentabilidade, reduzindo o uso de recursos e adotando energias renováveis.</button>
+            <button class="botao-resposta" onclick="resposta('gestor')">D) Desenvolvo estratégias de gestão de risco e diversificação de culturas para enfrentar as incertezas climáticas.</button>
+        </div>
+    </div>
+    <div id="resultado" class="escondido">
+        <h2>Resultado do Quiz</h2>
+        <p class="resultado-destaque" id="tipo-agricultor"></p>
+        <div class="caixa-recomendacoes" id="recomendacoes"></div>
+    </div>
+   </div>       
+   <script>
+        const perguntas = ['pergunta-1', 'pergunta-2', 'pergunta-3', 'pergunta-4'];
+        const pontuacoes = {
+            tech: 0,
+            raiz: 0,
+            sust: 0,
+            gestor: 0,
+        };
+        let indiceAtual = 0;
+
+        function comecarQuiz() {
+            document.getElementById('tela-inicio').classList.add('escondido');
+            indiceAtual = 0;
+            mostrarPergunta(indiceAtual);
+        }
+
+        function mostrarPergunta(indice) {
+            perguntas.forEach((id, index) => {
+                const elemento = document.getElementById(id);
+                if (elemento) {
+                    elemento.classList.toggle('escondido', index !== indice);
+                }
+            });
+        }
+
+        function resposta(tipo) {
+            if (!pontuacoes.hasOwnProperty(tipo)) return;
+            pontuacoes[tipo] += 1;
+
+            const perguntaAtual = document.getElementById(perguntas[indiceAtual]);
+            if (perguntaAtual) {
+                perguntaAtual.classList.add('escondido');
+            }
+
+            indiceAtual += 1;
+            if (indiceAtual < perguntas.length) {
+                mostrarPergunta(indiceAtual);
+            } else {
+                mostrarResultado();
+            }
+        }
+
+        function mostrarResultado() {
+            const resultado = document.getElementById('resultado');
+            const tipoAgricultor = document.getElementById('tipo-agricultor');
+            const recomendacoes = document.getElementById('recomendacoes');
+
+            const maiorPontuacao = Math.max(...Object.values(pontuacoes));
+            const categorias = Object.keys(pontuacoes).filter(chave => pontuacoes[chave] === maiorPontuacao);
+            const escolha = categorias[0] || 'versatil';
+
+            let titulo = '';
+            let texto = '';
+
+            switch (escolha) {
+                case 'tech':
+                    titulo = 'Agricultor Tecnológico🤖';
+                    texto = '<p>Você adora usar tecnologia para melhorar sua produção e tomar decisões mais precisas.</p>';
+                    break;
+                case 'raiz':
+                    titulo = 'Agricultor de Raiz🌾';
+                    texto = '<p>Você valoriza métodos tradicionais e o cuidado com o solo e a natureza.</p>';
+                    break;
+                case 'sust':
+                    titulo = 'Agricultor Sustentável🌱';
+                    texto = '<p>Você busca soluções que equilibram produção e preservação ambiental.</p>';
+                    break;
+                case 'gestor':
+                    titulo = 'Gestor Agrícola💼';
+                    texto = '<p>Você prefere planejar, analisar e seguir uma estratégia inteligente para a fazenda.</p>';
+                    break;
+                default:
+                    titulo = 'Agricultor Versátil🔄';
+                    texto = '<p>Você tem uma abordagem equilibrada e multifacetada na agricultura.</p>';
+            }
+
+            tipoAgricultor.innerHTML = titulo;
+            recomendacoes.innerHTML = `
+                <div class="caixa-recomendacoes">
+                    ${texto}
+                    <h3>Recomendações</h3>
+                    <ul>
+                        <li>Continue desenvolvendo seu estilo e adaptando-se às condições locais.</li>
+                        <li>Use informação e tecnologia para melhorar sua tomada de decisões.</li>
+                        <li>Considere práticas sustentáveis que protejam seu solo e água.</li>
+                    </ul>
+                </div>
+            `;
+            resultado.classList.remove('escondido');
+        }
+
+        function abrirMenu() {
+            document.getElementById('caixa-opcoes').classList.toggle('escondido');
+        }
+
+        function aumentarLetra() {
+            document.body.classList.add('fonte-grande');
+        }
+
+        function diminuirLetra() {
+            document.body.classList.remove('fonte-grande');
+        }
+
+        function alternarModoEscuro() {
+            document.body.classList.toggle('modo-escuro');
+        }
+
+        function alternarModoClaro() {
+            document.body.classList.remove('modo-escuro');
+        }
+
+        function lerTexto() {
+            const texto = document.querySelector('.caixa-quiz').innerText;
+            if ('speechSynthesis' in window) {
+                const mensagem = new SpeechSynthesisUtterance(texto);
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(mensagem);
+            } else {
+                alert('Leitor de texto não está disponível neste navegador.');
+            }
+        }
+    </script>
+</body>
+</html>
