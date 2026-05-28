@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz do Agro!!</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚜</text></svg>">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <div class="menu-acessibilidade">
+    <button class="btn-pontinhos" onclick="abrirMenu()" title="Acessibilidade">⋮</button>
+    <div id="caixa-opcoes" class="opcoes-menu escondido">
+        <button onclick="aumentarLetra()" title="Aumentar fonte">A+</button>
+        <button onclick="diminuirLetra()" title="Diminuir fonte">A-</button>
+        <button onclick="alternarModoEscuro()" title="Alternar modo escuro">🌙</button>
+        <button onclick="alternarModoClaro()" title="Alternar modo claro">☀️</button>
+        <button onclick="lerTexto()" title="Ler texto">🔊</button>
+    </div>
+   </div>
+   
+   <div class="caixa-quiz">
+        <div class="banner-fazenda" aria-hidden="true"></div>
+        
+        <div id="tela-inicio">
+            <h1>🚜 Quiz do Agro!! 2026</h1>
+            <p>Descubra que tipo de agricultor você é!</p>
+            <button class="botao-resposta" onclick="comecarQuiz()">Começar o Teste!</button>
+        </div>
+        
+        <div id="pergunta-1" class="escondido">
+            <h2>1. Como você lida com uma infestation de pragas na sua plantação?</h2>
+            <div class="grade-botoes">      
+                <button class="botao-resposta" onclick="resposta('tech')">A) Uso pesticidas químicos para eliminar as pragas rapidamente.</button>
+                <button class="botao-resposta" onclick="resposta('raiz')">B) Introduzo predadores naturais, como joaninhas, para controlar as pragas.</button>
+                <button class="botao-resposta" onclick="resposta('sust')">C) Adoto práticas de manejo integrado de pragas, combinando métodos orgânicos e químicos.</button>
+                <button class="botao-resposta" onclick="resposta('gestor')">D) Analiso os relatórios de pragas e consulto especialistas para tomar a melhor decisão.</button>
+            </div>
+        </div>
+
+        <div id="pergunta-2" class="escondido">
+            <h2>2. Qual é a sua abordagem para melhorar a produtividade da sua fazenda?</h2>
+            <div class="grade-botoes">
+                <button class="botao-resposta" onclick="resposta('tech')">A) Invisto em tecnologia de ponta, como sensores de solo e irrigação automatizada.</button>
+                <button class="botao-resposta" onclick="resposta('raiz')">B) Foco em práticas tradicionais, como rotação de culturas e adubação orgânica.</button>
+                <button class="botao-resposta" onclick="resposta('sust')">C) Adoto métodos sustentáveis, como agricultura regenerativa e agroflorestal.</button>
+                <button class="botao-resposta" onclick="resposta('gestor')">D) Contrato consultores agrícolas para otimizar o manejo e a logística da fazenda.</button>
+            </div>
+        </div>
+
+        <div id="pergunta-3" class="escondido">
+            <h2>3. Como você se mantém atualizado sobre as tendências e inovações no setor agrícola?</h2>
+            <div class="grade-botoes">
+                <button class="botao-resposta" onclick="resposta('tech')">A) Participo de feiras agrícolas e sigo influenciadores do setor nas redes sociais.</button>
+                <button class="botao-resposta" onclick="resposta('raiz')">B) Aprendo com a experiência de agricultores mais antigos e participo de grupos comunitários.</button>
+                <button class="botao-resposta" onclick="resposta('sust')">C) Leio artigos científicos e participo de workshops sobre agricultura sustentável.</button>
+                <button class="botao-resposta" onclick="resposta('gestor')">D) Assino revistas especializadas e participo de conferências do setor agrícola.</button>
+            </div>
+        </div> 
+
+        <div id="pergunta-4" class="escondido">
+            <h2>4. O que você faz para lidar com as mudanças climáticas e seus impactos na agricultura?</h2>
+            <div class="grade-botoes">
+                <button class="botao-resposta" onclick="resposta('tech')">A) Invisto em tecnologias de previsão climática e adaptação agrícola.</button>
+                <button class="botao-resposta" onclick="resposta('raiz')">B) Adoto práticas agrícolas resilientes, como plantio direto e conservação do solo.</button>
+                <button class="botao-resposta" onclick="resposta('sust')">C) Promovo a sustentabilidade, reduzindo o uso de recursos e adotando energias renováveis.</button>
+                <button class="botao-resposta" onclick="resposta('gestor')">D) Desenvolvo estratégias de gestão de risco e diversificação de culturas para enfrentar as incertezas climáticas.</button>
+            </div>
+        </div>
+        
+        <div id="resultado" class="escondido">
+            <h2>Resultado do Quiz</h2>
+            <p class="resultado-destaque" id="tipo-agricultor"></p>
+            <div class="caixa-recomendacoes" id="recomendacoes"></div>
+        </div>
+   </div>       
+   
+   <script src="script.js"></script>
+</body>
+</html>
